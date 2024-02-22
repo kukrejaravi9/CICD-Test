@@ -19,11 +19,6 @@ jobs:
           else
             echo "Environment=qa" >> $GITHUB_OUTPUT
           fi
-
-      - name: Call reusable workflow
-        uses: ./.github/workflows/cicd-env.yml
-        with:
-          environment: ${{ env.Environment }}
   
   test-env:
     needs: test-env-protection
