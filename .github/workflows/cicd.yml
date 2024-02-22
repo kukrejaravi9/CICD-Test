@@ -1,0 +1,10 @@
+name: CI/CD Test
+on:
+  push
+
+jobs:
+  test-env-protection:
+    uses: ./.github/workflows/cicd-env.yml
+    with:
+      environment: ${{ if contains(github.ref, 'refs/heads/release-123') }}production${{ else }}qa${{ endif }}
+    secrets: inherit
