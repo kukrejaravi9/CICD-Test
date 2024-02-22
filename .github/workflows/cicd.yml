@@ -6,6 +6,9 @@ jobs:
   test-env-protection:
     runs-on: ubuntu-latest
     steps:    
+      - name: Check out code
+        uses: actions/checkout@v2
+        
       - name: Set environment variable based on branch
         run: |
           if [[ ${{ github.ref }} == 'refs/heads/release-123' ]]; then
