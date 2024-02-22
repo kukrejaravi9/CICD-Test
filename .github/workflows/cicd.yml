@@ -6,5 +6,5 @@ jobs:
   test-env-protection:
     uses: ./.github/workflows/cicd-env.yml
     with:
-      environment: ${{ if contains(github.ref, 'refs/heads/release-123') }}production${{ else }}qa${{ endif }}
+      environment: ${{ if contains(github.ref, 'refs/heads/main') }}production${{ else }}qa${{ endif }}
     secrets: inherit
