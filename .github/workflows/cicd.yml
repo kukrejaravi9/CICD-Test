@@ -4,7 +4,22 @@ on:
 
 jobs:
   test-env-protection:
-    uses: ./.github/workflows/cicd-env.yml
-    with:
-      environment: ${{ if contains(github.ref, 'refs/heads/main') }}production${{ else }}ba${{ endif }}
-    secrets: inherit
+    runs-on: ubuntu-latest
+    steps:    
+      - name: Set environment variable based on branch
+        run: |
+          if [[ ${{ github.ref }} == 'refs/heads/release-123' ]]; then
+            echo "Environment=production" >> $GITHUB_ENV
+          else
+            echo "Environment=qa" >> $GITHUB_ENV
+          fi
+
+      - name: Call reusable workflow
+        uses: ./.github/workflows/cicd-env.yml
+        with:
+          environment: ${{ env.Environment }}
+  
+    #uses: ./.github/workflows/cicd-env.yml
+    #with:
+      #environment: ${{ if contains(github.ref, 'refs/heads/main') }}production${{ else }}ba${{ endif }}
+    #secrets: inherit
