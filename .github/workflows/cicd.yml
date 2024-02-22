@@ -5,16 +5,19 @@ on:
 jobs:
   test-env-protection:
     runs-on: ubuntu-latest
+    outputs:
+      ENVI: ${{ steps.set-env.outputs.Environment }}
     steps:    
       - name: Check out code
         uses: actions/checkout@v2
         
       - name: Set environment variable based on branch
+        id: set-env
         run: |
           if [[ ${{ github.ref }} == 'refs/heads/release-123' ]]; then
-            echo "Environment=production" >> $GITHUB_ENV
+            echo "Environment=production" >> $GITHUB_OUTPUT
           else
-            echo "Environment=qa" >> $GITHUB_ENV
+            echo "Environment=qa" >> $GITHUB_OUTPUT
           fi
 
       - name: Call reusable workflow
@@ -22,7 +25,9 @@ jobs:
         with:
           environment: ${{ env.Environment }}
   
-    #uses: ./.github/workflows/cicd-env.yml
-    #with:
-      #environment: ${{ if contains(github.ref, 'refs/heads/main') }}production${{ else }}ba${{ endif }}
+  test-env:
+    needs: test-env-protection
+    uses: ./.github/workflows/cicd-env.yml
+    with:
+      environment: ${{ needs.test-env-protection.outputs.ENVI }}
     #secrets: inherit
