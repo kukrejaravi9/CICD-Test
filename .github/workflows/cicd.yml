@@ -14,5 +14,5 @@ jobs:
         run: |
           echo ${{ github.event.head_commit.message }} 
         
-          COMMIT_MESSAGE=$(git log -1 --pretty=%B | head -n 1)
+          COMMIT_MESSAGE=$(${{ github.event.head_commit.message }}  --pretty=%B | head -n 1)
           echo "$COMMIT_MESSAGE"
