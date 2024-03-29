@@ -9,8 +9,7 @@ jobs:
       ENVI: ${{ steps.set-env.outputs.Environment }}
     steps:    
       - name: Check out code
-        uses: actions/checkout@v2
-        
+        uses: actions/checkout@v2        
       - name: Extract latest commit message
         run: |
           COMMIT_MESSAGE=$(git log -1 --pretty=%B | head -n 1)
