@@ -11,18 +11,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
         
-      - name: Set environment variable based on branch
-        id: set-env
+      - name: Extract latest commit message
         run: |
-          if [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
-            echo "Environment=production" >> $GITHUB_OUTPUT
-          else
-            echo "Environment=qa" >> $GITHUB_OUTPUT
-          fi
-  
-  test-env:
-    needs: test-env-protection
-    uses: ./.github/workflows/cicd-env.yml
-    with:
-      environment: ${{ needs.test-env-protection.outputs.ENVI }}
-    #secrets: inherit
+          COMMIT_MESSAGE=$(git log -1 --pretty=%B | head -n 1)
+          echo "$COMMIT_MESSAGE"
